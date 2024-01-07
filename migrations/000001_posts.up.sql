@@ -1,6 +1,6 @@
 CREATE TABLE "posts"(
-    "id" SERIAL PRIMARY KEY NOT NULL,
-    "user_id" INT NOT NULL,
+    "id" INTEGER NOT NULL ,
+    "user_id" INTEGER NOT NULL ,
     "title" VARCHAR,
     "body"  VARCHAR
 );
