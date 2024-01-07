@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package service3_proto;
+
+service Service3{
+    rpc StartDataCollection(Empty) returns (Result);
+    rpc CheckCollectionStatus(Empty) returns (Status);
+    rpc GetPosts(Empty) returns (Posts);
+    rpc GetPostById(PostId) returns (Post);
+    rpc DeletePost(PostId) returns (Result);
+    rpc UpdatePost(PostUpdate) returns (Result);
+}
+
+message Empty {}
+
+message Status {
+  bool inProgress = 1;
+  int32 totalPages = 2;
+  int32 pagesCollected = 3;
+}
+
+message Posts {
+  repeated Post posts = 1;
+}
+
+message PostId {
+  int64 id = 1;
+}
+
+message Post {
+  int64 id = 1;
+  int64 userId = 2;
+  string title = 3;
+  string body = 4;
+}
+
+message PostUpdate {
+  int64 id = 1;
+  string title = 2;
+  string body = 3;
+}
+
+message Result {
+  bool success = 1;
+  string message = 2;
+}
