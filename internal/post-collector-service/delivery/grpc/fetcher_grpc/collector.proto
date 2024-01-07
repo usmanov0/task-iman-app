@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package fetcher_grpc;
+
+option go_package = "/pb";
+
+service CollectorService{
+  rpc CollectorPosts(Empty) returns(Result);
+}
+
+message Empty{}
+
+message Result{
+  string statusMessage = 1;
+}
+
