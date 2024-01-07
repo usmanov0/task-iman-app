@@ -1,13 +1,9 @@
 package main
 
-import "fmt"
+import (
+	https "test-project-iman/cmd/httpServer"
+)
 
 func main() {
-	doSomeAction()
-}
-
-func doSomeAction() {
-	for i := 0; i < 10; i++ {
-		fmt.Println("hello world")
-	}
+	https.HttpServer()
 }
