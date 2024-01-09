@@ -8,7 +8,7 @@ import (
 	provider "test-project-iman/internal/post-collector-service/domain"
 )
 
-const CollectPages = 2
+const CollectPages = 50
 
 type PostService interface {
 	CollectPosts() error
