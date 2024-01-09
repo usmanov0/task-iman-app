@@ -5,8 +5,9 @@ import (
 	"golang.org/x/net/context"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"test-project-iman/internal/post-crud-service/app"
 	"test-project-iman/internal/post-crud-service/delivery/grpc/crud_grpc/pb"
+
+	"test-project-iman/internal/post-crud-service/app"
 )
 
 type CrudServer struct {
