@@ -1,13 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"test-project-iman/cmd/app/servers"
+)
 
 func main() {
-	doSomeAction()
-}
-
-func doSomeAction() {
-	for i := 0; i < 10; i++ {
-		fmt.Println("hello world")
-	}
+	servers.RunGrpcServer()
 }
