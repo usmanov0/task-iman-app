@@ -1,9 +1,9 @@
 package main
 
 import (
-	https "test-project-iman/cmd/httpServer"
+	"test-project-iman/cmd/app/servers"
 )
 
 func main() {
-	https.HttpServer()
+	servers.RunGrpcServer()
 }
