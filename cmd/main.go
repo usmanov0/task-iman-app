@@ -1,7 +1,7 @@
 package main
 
 import (
-	"test-project-iman/cmd/app/servers"
+	"test-project-iman/cmd/grpc_server/servers"
 )
 
 func main() {

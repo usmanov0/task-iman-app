@@ -2,7 +2,7 @@ package servers
 
 import (
 	"fmt"
-	origingr "google.golang.org/grpc"
+	gr "google.golang.org/grpc"
 	"log"
 	"net"
 	"os"
@@ -44,7 +44,7 @@ func RunGrpcServer() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	fmt.Println("listening op port 50051")
-	s := origingr.NewServer()
+	s := gr.NewServer()
 	pb.RegisterCollectorServiceServer(s, dataFetcherGrpc)
 	pb2.RegisterCrudServiceServer(s, dataCrudGrpc)
 	if err := s.Serve(listener); err != nil {
