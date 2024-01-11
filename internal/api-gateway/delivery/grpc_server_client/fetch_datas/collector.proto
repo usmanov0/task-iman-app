@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package fetcher_grpc;
+package fetch_datas;
 option go_package = "/pb";
 
 service CollectorService{

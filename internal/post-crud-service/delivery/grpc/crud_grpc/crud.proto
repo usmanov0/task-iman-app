@@ -4,7 +4,7 @@ package crud_grpc;
 option go_package = "/pb";
 
 service CrudService{
-    rpc GetList(Empty)  returns(PostList);
+    rpc GetList(PostRequestPage)  returns(PostList);
     rpc GetPost(PostRequestId) returns(Post);
     rpc Update(PostUpdate) returns(Result);
     rpc Delete(PostRequestId) returns(Empty);
@@ -14,6 +14,11 @@ message Empty{}
 
 message PostRequestId{
     int64 id = 1;
+}
+
+message PostRequestPage{
+    int64 page = 1;
+    int64 limit = 2;
 }
 
 message Post{
