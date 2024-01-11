@@ -19,12 +19,13 @@ func NewCrudServiceServer(postCrud app.PostCrudService) pb.CrudServiceServer {
 	return &CrudServer{postCrud: postCrud}
 }
 
-func (c *CrudServer) GetList(ctx context.Context, _ *pb.Empty) (*pb.PostList, error) {
+func (c *CrudServer) GetList(ctx context.Context, req *pb.PostRequestPage) (*pb.PostList, error) {
 	if ctx.Err() != nil {
 		return nil, status.Errorf(codes.Canceled, "Request canceled")
 	}
 
-	posts, err := c.postCrud.GetAllPosts()
+	var page, limit int
+	posts, err := c.postCrud.GetAllPosts(page, limit)
 
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "Failed to get posts: %v", err)
