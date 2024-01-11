@@ -53,7 +53,7 @@ func (uc *PostCollectorService) CollectPosts() error {
 	for _, post := range allPosts {
 		_, err := uc.postRepo.Save(&post)
 		if err != nil {
-			return errors.New("Unable to save the data into database. Please, try again later!")
+			return errors.New("Failed to save posts to the database. Please check your network connection and try again later.")
 		}
 	}
 	return nil
