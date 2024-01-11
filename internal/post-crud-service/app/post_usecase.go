@@ -6,7 +6,7 @@ import (
 )
 
 type PostCrudService interface {
-	GetAllPosts() ([]domain.Post, error)
+	GetAllPosts(page, limit int) ([]domain.Post, error)
 	GetOne(postId int) (*domain.Post, error)
 	Update(postId int, title, body string) (*domain.PostUpdateResponse, error)
 	Delete(postId int) error
@@ -20,8 +20,8 @@ type postUseCase struct {
 	postRepo domain.PostCrudRepository
 }
 
-func (p *postUseCase) GetAllPosts() ([]domain.Post, error) {
-	posts, err := p.postRepo.GetList()
+func (p *postUseCase) GetAllPosts(page, limit int) ([]domain.Post, error) {
+	posts, err := p.postRepo.GetList(page, limit)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get all posts: %v", err)
 	}
