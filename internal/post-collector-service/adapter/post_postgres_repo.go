@@ -17,6 +17,8 @@ func NewPostRepository(db *pgx.Conn) domain.PostRepository {
 func (p *postRepository) Save(post *domain.Post) (id int, err error) {
 	query := `INSERT INTO posts(id,user_id,title,body) 
 	VALUES($1,$2,$3,$4) 
+	ON CONFLICT (id) DO UPDATE 
+	SET user_id = $2, title = $3; body = $4
 	RETURNING id
 	`
 
