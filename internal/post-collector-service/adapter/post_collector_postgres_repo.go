@@ -58,7 +58,6 @@ func (p *postProviderRepo) FetchPosts(page string) ([]domain.Post, error) {
 			UserId: post.UserId,
 			Title:  post.Title,
 			Body:   post.Body,
-			Page:   post.Page,
 		})
 	}
 	return postList, nil
