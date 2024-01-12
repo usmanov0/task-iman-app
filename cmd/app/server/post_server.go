@@ -9,8 +9,8 @@ import (
 	adapter2 "test-project-iman/internal/post-crud-service/adapter"
 	app2 "test-project-iman/internal/post-crud-service/app"
 	grpc2 "test-project-iman/internal/post-crud-service/delivery/grpc"
-	pb2 "test-project-iman/internal/post-crud-service/delivery/grpc/crud_grpc/pb"
 	"test-project-iman/pkg/common"
+	pb2 "test-project-iman/proto/post_proto/crud_grpc/pb"
 )
 
 func RunGrpcServer() {
@@ -24,14 +24,13 @@ func RunGrpcServer() {
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}
-	port := os.Getenv("GRPC_PORT2")
 
 	crudServiceRepo := adapter2.NewPostCrudRepository(db)
 	crudUsecase := app2.NewPostCrudUseCase(crudServiceRepo)
 
 	dataCrudGrpc := grpc2.NewCrudServiceServer(crudUsecase)
 
-	listener, err := net.Listen("tcp", port)
+	listener, err := net.Listen("tcp", os.Getenv("GRPC_PORT2"))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
