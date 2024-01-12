@@ -26,7 +26,7 @@ var postGrpcServerCmd = &cobra.Command{
 var apiGateway = &cobra.Command{
 	Use: "api-gateway",
 	Run: func(cmd *cobra.Command, args []string) {
-		server2.ApiGatewayServer()
+		server2.SetupApiGatewayRouter()
 	},
 }
 
@@ -39,12 +39,3 @@ func Execute() {
 		os.Exit(1)
 	}
 }
-
-//var runAllCmd = &cobra.Command{
-//	Use:   "run-all",
-//	Short: "Run both Execute and ExecuteCollector",
-//	Run: func(cmd *cobra.Command, args []string) {
-//		Execute()
-//		ExecuteCollector()
-//	},
-//}
