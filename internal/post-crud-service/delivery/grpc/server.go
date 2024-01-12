@@ -5,21 +5,21 @@ import (
 	"golang.org/x/net/context"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"test-project-iman/internal/post-crud-service/delivery/grpc/crud_grpc/pb"
+	pb2 "test-project-iman/proto/post_proto/crud_grpc/pb"
 
 	"test-project-iman/internal/post-crud-service/app"
 )
 
 type CrudServer struct {
 	postCrud app.PostCrudService
-	pb.UnimplementedCrudServiceServer
+	pb2.UnimplementedCrudServiceServer
 }
 
-func NewCrudServiceServer(postCrud app.PostCrudService) pb.CrudServiceServer {
+func NewCrudServiceServer(postCrud app.PostCrudService) pb2.CrudServiceServer {
 	return &CrudServer{postCrud: postCrud}
 }
 
-func (c *CrudServer) GetList(ctx context.Context, _ *pb.Empty) (*pb.PostList, error) {
+func (c *CrudServer) GetList(ctx context.Context, req *pb2.PostRequestPage) (*pb2.PostList, error) {
 	if ctx.Err() != nil {
 		return nil, status.Errorf(codes.Canceled, "Request canceled")
 	}
@@ -30,9 +30,9 @@ func (c *CrudServer) GetList(ctx context.Context, _ *pb.Empty) (*pb.PostList, er
 		return nil, status.Errorf(codes.Internal, "Failed to get posts: %v", err)
 	}
 
-	var pbPosts []*pb.Post
+	var pbPosts []*pb2.Post
 	for _, post := range posts {
-		pbPost := &pb.Post{
+		pbPost := &pb2.Post{
 			Id:     post.Id,
 			UserId: post.UserId,
 			Title:  post.Title,
@@ -40,10 +40,10 @@ func (c *CrudServer) GetList(ctx context.Context, _ *pb.Empty) (*pb.PostList, er
 		}
 		pbPosts = append(pbPosts, pbPost)
 	}
-	return &pb.PostList{Post: pbPosts}, nil
+	return &pb2.PostList{Post: pbPosts}, nil
 }
 
-func (c *CrudServer) GetPost(ctx context.Context, req *pb.PostRequestId) (*pb.Post, error) {
+func (c *CrudServer) GetPost(ctx context.Context, req *pb2.PostRequestId) (*pb2.Post, error) {
 	if ctx.Err() != nil {
 		return nil, status.Errorf(codes.Canceled, "Request canceled")
 	}
@@ -56,7 +56,7 @@ func (c *CrudServer) GetPost(ctx context.Context, req *pb.PostRequestId) (*pb.Po
 		return nil, status.Errorf(codes.NotFound, "Failed to get post: %v", err)
 	}
 
-	return &pb.Post{
+	return &pb2.Post{
 		Id:     post.Id,
 		UserId: post.UserId,
 		Title:  post.Title,
@@ -64,7 +64,7 @@ func (c *CrudServer) GetPost(ctx context.Context, req *pb.PostRequestId) (*pb.Po
 	}, nil
 }
 
-func (c *CrudServer) Update(ctx context.Context, req *pb.PostUpdate) (*pb.Result, error) {
+func (c *CrudServer) Update(ctx context.Context, req *pb2.PostUpdate) (*pb2.Result, error) {
 	if ctx.Err() != nil {
 		return nil, status.Errorf(codes.Canceled, "Request canceled")
 	}
@@ -73,19 +73,19 @@ func (c *CrudServer) Update(ctx context.Context, req *pb.PostUpdate) (*pb.Result
 
 	updateRes, err := c.postCrud.Update(postId, req.Title, req.Body)
 	if err != nil {
-		return &pb.Result{
+		return &pb2.Result{
 			Success: false,
 			Message: fmt.Sprintf("Failed to update post: %v", err),
 		}, status.Errorf(codes.Internal, "Failed to update post: %v", err)
 	}
 
-	return &pb.Result{
+	return &pb2.Result{
 		Success: true,
 		Message: updateRes.Message,
 	}, nil
 }
 
-func (c *CrudServer) Delete(ctx context.Context, req *pb.PostRequestId) (*pb.Empty, error) {
+func (c *CrudServer) Delete(ctx context.Context, req *pb2.PostRequestId) (*pb2.Empty, error) {
 	if ctx.Err() != nil {
 		return nil, status.Errorf(codes.Canceled, "Request canceled")
 	}
@@ -96,5 +96,5 @@ func (c *CrudServer) Delete(ctx context.Context, req *pb.PostRequestId) (*pb.Emp
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "Failed to delete post: %v", err)
 	}
-	return &pb.Empty{}, nil
+	return &pb2.Empty{}, nil
 }

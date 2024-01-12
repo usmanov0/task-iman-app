@@ -1,24 +1,58 @@
 version: '3.8'
 
 services:
-  app:
+  post-collector:
     build:
       context: .
-      dockerfile: docker/dev/Dockerfile
+      dockerfile: internal/post-collector-service/docker/dev/Dockerfile
     volumes:
       - .:/app
       - ./.go/pkg:/go/pkg
       - ./.go-cache:/go-cache
     working_dir: /app
     ports:
-      - "50051:50051"
+      - "8080:8080"
+    env_file:
+      - .env
+    environment:
+     GOCACHE: /go-cache
+    entrypoint: ["internal/post-collector-service/docker/dev/entrypoint.sh", "./cmd/main.go", "grpc-server1"]
+
+
+  post-service:
+    build:
+      context: .
+      dockerfile: internal/post-crud-service/docker/dev/Dockerfile
+    volumes:
+      - .:/app
+      - ./.go/pkg:/go/pkg
+      - ./.go-cache:/go-cache
+    working_dir: /app
+    ports:
+      - "8081:8081"
     env_file:
       - .env
     environment:
       GOCACHE: /go-cache
-    entrypoint: ["./docker/dev/entrypoint.sh", "./cmd/main.go"]
-    depends_on:
-      - db
+    entrypoint: ["internal/post-crud-service/docker/dev/entrypoint.sh", "./cmd/main.go", "grpc-server2"]
+
+  api-gateway:
+    build:
+      context: .
+      dockerfile: internal/api-gateway/docker/dev/Dockerfile
+    volumes:
+      - .:/app
+      - ./.go/pkg:/go/pkg
+      - ./.go-cache:/go-cache
+    working_dir: /app
+    ports:
+      - "8082:8082"
+    env_file:
+      - .env
+    environment:
+      GOCACHE: /go-cache
+    entrypoint: ["internal/api-gateway/docker/dev/entrypoint.sh", "./cmd/main.go", "api-gateway"]
+
 
   migrate:
     image: migrate/migrate
@@ -29,6 +63,7 @@ services:
       - .env
     profiles:
       - donotstart
+
   db:
     image: postgres:latest
     environment:

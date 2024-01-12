@@ -1,5 +1,5 @@
 CREATE TABLE "posts"(
-    "id" INTEGER NOT NULL ,
+    "id" INTEGER PRIMARY KEY,
     "user_id" INTEGER NOT NULL ,
     "title" VARCHAR,
     "body"  VARCHAR

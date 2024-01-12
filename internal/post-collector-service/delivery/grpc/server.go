@@ -6,7 +6,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"test-project-iman/internal/post-collector-service/app"
-	"test-project-iman/internal/post-collector-service/delivery/grpc/fetcher_grpc/pb"
+	"test-project-iman/proto/fetcher_proto/fetcher_grpc/pb"
 )
 
 type Server struct {

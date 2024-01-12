@@ -1,9 +1,7 @@
 package main
 
-import (
-	"test-project-iman/cmd/grpc_server/servers"
-)
+import "test-project-iman/cmd/app"
 
 func main() {
-	servers.RunGrpcServer()
+	app.Execute()
 }
