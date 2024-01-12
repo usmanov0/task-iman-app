@@ -15,10 +15,10 @@ func NewPostCrudRepository(db *pgx.Conn) domain.PostCrudRepository {
 	return &postRepository{db: db}
 }
 
-func (p *postRepository) GetList(page, limit int) ([]domain.Post, error) {
-	query := `SELECT p.id, p.user_id, p.title, p.body, p.page FROM posts p WHERE p.page = $1 LIMIT $2`
+func (p *postRepository) GetList() ([]domain.Post, error) {
+	query := `SELECT p.id, p.user_id, p.title, p.body FROM posts p`
 
-	rows, err := p.db.Query(query, page, limit)
+	rows, err := p.db.Query(query)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get all posts %v", err)
 	}
@@ -27,7 +27,7 @@ func (p *postRepository) GetList(page, limit int) ([]domain.Post, error) {
 	var posts []domain.Post
 	for rows.Next() {
 		var post domain.Post
-		err := rows.Scan(&post.Id, &post.UserId, &post.Title, &post.Body, &post.Page)
+		err := rows.Scan(&post.Id, &post.UserId, &post.Title, &post.Body)
 		if err != nil {
 			return nil, fmt.Errorf("failed to scan rows: %v", err)
 		}
