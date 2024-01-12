@@ -9,8 +9,8 @@ import (
 	"test-project-iman/internal/post-collector-service/adapter"
 	"test-project-iman/internal/post-collector-service/app"
 	"test-project-iman/internal/post-collector-service/delivery/grpc"
-	"test-project-iman/internal/post-collector-service/delivery/grpc/fetcher_grpc/pb"
 	"test-project-iman/pkg/common"
+	"test-project-iman/proto/fetcher_proto/fetcher_grpc/pb"
 )
 
 func RunGrpcCollectorServer() {
@@ -24,7 +24,6 @@ func RunGrpcCollectorServer() {
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}
-	port := os.Getenv("GRPC_PORT1")
 
 	repo := adapter.NewPostRepository(db)
 	providerRepo := adapter.NewPostCollectorRepository(db)
@@ -32,7 +31,7 @@ func RunGrpcCollectorServer() {
 
 	dataFetcherGrpc := grpc.NewDataCollectorServer(usecase)
 
-	listener, err := net.Listen("tcp", port)
+	listener, err := net.Listen("tcp", os.Getenv("GRPC_PORT1"))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
