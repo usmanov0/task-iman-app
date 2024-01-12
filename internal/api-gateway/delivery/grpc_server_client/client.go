@@ -3,26 +3,26 @@ package grpc_server_client
 import (
 	"google.golang.org/grpc"
 	"log"
-	"test-project-iman/internal/api-gateway/delivery/grpc_server_client/fetch_datas/pb"
-	postservice "test-project-iman/internal/api-gateway/delivery/grpc_server_client/post_service/pb"
+	fetcher "test-project-iman/proto/fetcher_proto/fetcher_grpc/pb"
+	postservice "test-project-iman/proto/post_proto/crud_grpc/pb"
 )
 
 const (
 	service1Address = "post-collector:8080"
-	service2Address = "post_service:8081"
+	service2Address = "post-service:8081"
 )
 
 type ServiceManager interface {
-	FetchData() pb.CollectorServiceClient
+	FetchData() fetcher.CollectorServiceClient
 	PostService() postservice.CrudServiceClient
 }
 
 type grpcClient struct {
-	fetchData  pb.CollectorServiceClient
+	fetchData  fetcher.CollectorServiceClient
 	postClient postservice.CrudServiceClient
 }
 
-func (c *grpcClient) FetchData() pb.CollectorServiceClient {
+func (c *grpcClient) FetchData() fetcher.CollectorServiceClient {
 	return c.fetchData
 }
 
@@ -45,7 +45,7 @@ func NewApiClient() ServiceManager {
 	}
 
 	s := &grpcClient{
-		fetchData:  pb.NewCollectorServiceClient(fetchConn),
+		fetchData:  fetcher.NewCollectorServiceClient(fetchConn),
 		postClient: postservice.NewCrudServiceClient(postClient),
 	}
 	return s
