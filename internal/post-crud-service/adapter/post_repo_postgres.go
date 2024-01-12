@@ -16,7 +16,7 @@ func NewPostCrudRepository(db *pgx.Conn) domain.PostCrudRepository {
 }
 
 func (p *postRepository) GetList(page, limit int) ([]domain.Post, error) {
-	query := `SELECT p.id, p.user_id, p.title, p.body FROM posts p WHERE p.page = $1 LIMIT $2`
+	query := `SELECT p.id, p.user_id, p.title, p.body, p.page FROM posts p WHERE p.page = $1 LIMIT $2`
 
 	rows, err := p.db.Query(query, page, limit)
 	if err != nil {
