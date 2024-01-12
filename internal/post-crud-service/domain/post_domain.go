@@ -5,7 +5,6 @@ type Post struct {
 	UserId int64  `json:"userId"`
 	Title  string `json:"title"`
 	Body   string `json:"body"`
-	Page   int    `json:"page"`
 }
 
 type PostUpdateResponse struct {
