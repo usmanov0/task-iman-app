@@ -1,10 +1,10 @@
-package grpc_server_client
+package client
 
 import (
 	"google.golang.org/grpc"
 	"log"
-	fetcher "test-project-iman/proto/fetcher_proto/fetcher_grpc/pb"
-	postservice "test-project-iman/proto/post_proto/crud_grpc/pb"
+	collect "test-project-iman/proto/collector_proto/collector_grpc/pb"
+	postservice "test-project-iman/proto/post_proto/post_grpc/pb"
 )
 
 const (
@@ -13,20 +13,20 @@ const (
 )
 
 type ServiceManager interface {
-	FetchData() fetcher.CollectorServiceClient
-	PostService() postservice.CrudServiceClient
+	FetchData() collect.CollectorServiceClient
+	PostService() postservice.PostServiceClient
 }
 
 type grpcClient struct {
-	fetchData  fetcher.CollectorServiceClient
-	postClient postservice.CrudServiceClient
+	fetchData  collect.CollectorServiceClient
+	postClient postservice.PostServiceClient
 }
 
-func (c *grpcClient) FetchData() fetcher.CollectorServiceClient {
+func (c *grpcClient) FetchData() collect.CollectorServiceClient {
 	return c.fetchData
 }
 
-func (c *grpcClient) PostService() postservice.CrudServiceClient {
+func (c *grpcClient) PostService() postservice.PostServiceClient {
 	return c.postClient
 }
 
@@ -45,8 +45,8 @@ func NewApiClient() ServiceManager {
 	}
 
 	s := &grpcClient{
-		fetchData:  fetcher.NewCollectorServiceClient(fetchConn),
-		postClient: postservice.NewCrudServiceClient(postClient),
+		fetchData:  collect.NewCollectorServiceClient(fetchConn),
+		postClient: postservice.NewPostServiceClient(postClient),
 	}
 	return s
 }

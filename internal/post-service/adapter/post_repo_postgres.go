@@ -4,21 +4,21 @@ import (
 	"errors"
 	"fmt"
 	"github.com/jackc/pgx"
-	"test-project-iman/internal/post-crud-service/domain"
+	"test-project-iman/internal/post-service/domain"
 )
 
 type postRepository struct {
 	db *pgx.Conn
 }
 
-func NewPostCrudRepository(db *pgx.Conn) domain.PostCrudRepository {
+func NewPostRepository(db *pgx.Conn) domain.PostRepository {
 	return &postRepository{db: db}
 }
 
-func (p *postRepository) GetList() ([]domain.Post, error) {
-	query := `SELECT p.id, p.user_id, p.title, p.body FROM posts p`
+func (p *postRepository) GetList(page, limit int) ([]domain.Post, error) {
+	query := `SELECT p.id, p.user_id, p.title, p.body FROM posts p WHERE p.page = $1  LIMIT $2`
 
-	rows, err := p.db.Query(query)
+	rows, err := p.db.Query(query, page, limit)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get all posts %v", err)
 	}
@@ -53,21 +53,14 @@ func (p *postRepository) GetOne(postId int) (*domain.Post, error) {
 	return &post, nil
 }
 
-func (p *postRepository) Update(postId int, title, body string) (*domain.PostUpdateResponse, error) {
+func (p *postRepository) Update(postId int, title, body string) error {
 	query := `UPDATE posts SET title = $2, body = $3 WHERE id = $1`
 
 	_, err := p.db.Query(query, postId, title, body)
 	if err != nil {
-		return &domain.PostUpdateResponse{
-			Success: false,
-			Message: fmt.Sprintf("failed to update post: %v", err),
-		}, err
+		fmt.Errorf("failed to update post %v", err)
 	}
-
-	return &domain.PostUpdateResponse{
-		Success: true,
-		Message: "post updated successfully",
-	}, nil
+	return nil
 }
 
 func (p *postRepository) Delete(postId int) error {

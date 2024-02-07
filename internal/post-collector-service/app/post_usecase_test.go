@@ -21,7 +21,7 @@ func (m *MockPostRepository) Save(post *domain.Post) (int, error) {
 	return 0, errors.New("SaveFunc not implemented")
 }
 
-func (m *MockPostProviderRepository) FetchPosts(page string) ([]domain.Post, error) {
+func (m *MockPostProviderRepository) CollectPosts(page string) ([]domain.Post, error) {
 	if m.FetchPostsFunc != nil {
 		return m.FetchPostsFunc(page)
 	}

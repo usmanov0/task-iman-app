@@ -4,7 +4,7 @@ services:
   post-collector:
     build:
       context: .
-      dockerfile: internal/post-collector-service/docker/dev/Dockerfile
+      dockerfile: docker/dev/Dockerfile
     volumes:
       - .:/app
       - ./.go/pkg:/go/pkg
@@ -16,13 +16,13 @@ services:
       - .env
     environment:
      GOCACHE: /go-cache
-    entrypoint: ["internal/post-collector-service/docker/dev/entrypoint.sh", "./cmd/main.go", "grpc-server1"]
+    entrypoint: ["docker/dev/entrypoint.sh", "./cmd/main.go", "grpc-server1"]
 
 
   post-service:
     build:
       context: .
-      dockerfile: internal/post-crud-service/docker/dev/Dockerfile
+      dockerfile: docker/dev/Dockerfile
     volumes:
       - .:/app
       - ./.go/pkg:/go/pkg
@@ -34,12 +34,12 @@ services:
       - .env
     environment:
       GOCACHE: /go-cache
-    entrypoint: ["internal/post-crud-service/docker/dev/entrypoint.sh", "./cmd/main.go", "grpc-server2"]
+    entrypoint: ["docker/dev/entrypoint.sh", "./cmd/main.go", "grpc-server2"]
 
   api-gateway:
     build:
       context: .
-      dockerfile: internal/api-gateway/docker/dev/Dockerfile
+      dockerfile: docker/dev/Dockerfile
     volumes:
       - .:/app
       - ./.go/pkg:/go/pkg
@@ -51,7 +51,7 @@ services:
       - .env
     environment:
       GOCACHE: /go-cache
-    entrypoint: ["internal/api-gateway/docker/dev/entrypoint.sh", "./cmd/main.go", "api-gateway"]
+    entrypoint: ["docker/dev/entrypoint.sh", "./cmd/main.go", "api-gateway"]
 
 
   migrate:

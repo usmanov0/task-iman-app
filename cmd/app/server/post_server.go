@@ -6,11 +6,11 @@ import (
 	"log"
 	"net"
 	"os"
-	adapter2 "test-project-iman/internal/post-crud-service/adapter"
-	app2 "test-project-iman/internal/post-crud-service/app"
-	grpc2 "test-project-iman/internal/post-crud-service/delivery/grpc"
+	adapter2 "test-project-iman/internal/post-service/adapter"
+	app2 "test-project-iman/internal/post-service/app"
+	grpc2 "test-project-iman/internal/post-service/delivery/grpc"
 	"test-project-iman/pkg/common"
-	pb2 "test-project-iman/proto/post_proto/crud_grpc/pb"
+	pb2 "test-project-iman/proto/post_proto/post_grpc/pb"
 )
 
 func RunGrpcServer() {
@@ -25,10 +25,10 @@ func RunGrpcServer() {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}
 
-	crudServiceRepo := adapter2.NewPostCrudRepository(db)
-	crudUsecase := app2.NewPostCrudUseCase(crudServiceRepo)
+	crudServiceRepo := adapter2.NewPostRepository(db)
+	crudUsecase := app2.NewPostUseCase(crudServiceRepo)
 
-	dataCrudGrpc := grpc2.NewCrudServiceServer(crudUsecase)
+	dataCrudGrpc := grpc2.NewPostServiceServer(crudUsecase)
 
 	listener, err := net.Listen("tcp", os.Getenv("GRPC_PORT2"))
 	if err != nil {
@@ -36,7 +36,7 @@ func RunGrpcServer() {
 	}
 	fmt.Println("listening op port 8081")
 	s := gr.NewServer()
-	pb2.RegisterCrudServiceServer(s, dataCrudGrpc)
+	pb2.RegisterPostServiceServer(s, dataCrudGrpc)
 	if err := s.Serve(listener); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}

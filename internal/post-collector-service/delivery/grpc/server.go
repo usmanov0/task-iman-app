@@ -3,10 +3,8 @@ package grpc
 import (
 	"context"
 	"fmt"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 	"test-project-iman/internal/post-collector-service/app"
-	"test-project-iman/proto/fetcher_proto/fetcher_grpc/pb"
+	"test-project-iman/proto/collector_proto/collector_grpc/pb"
 )
 
 type Server struct {
@@ -19,16 +17,11 @@ func NewDataCollectorServer(postService app.PostService) pb.CollectorServiceServ
 }
 
 func (s *Server) CollectorPosts(ctx context.Context, empty *pb.Empty) (*pb.Result, error) {
-	if ctx.Err() != nil {
-		return nil, status.Errorf(codes.Canceled, "Request canceled")
-	}
-
 	err := s.postService.CollectPosts()
 
 	if err != nil {
 		return nil, fmt.Errorf("failed to collect posts: %v", err)
 	}
-
 	response := &pb.Result{
 		StatusMessage: "Posts Collected successfully and saved to database",
 	}

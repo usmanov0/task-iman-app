@@ -10,7 +10,7 @@ import (
 	"test-project-iman/internal/post-collector-service/app"
 	"test-project-iman/internal/post-collector-service/delivery/grpc"
 	"test-project-iman/pkg/common"
-	"test-project-iman/proto/fetcher_proto/fetcher_grpc/pb"
+	"test-project-iman/proto/collector_proto/collector_grpc/pb"
 )
 
 func RunGrpcCollectorServer() {

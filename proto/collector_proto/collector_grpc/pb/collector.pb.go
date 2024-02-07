@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.28.1
 // 	protoc        v3.12.4
-// source: internal/post-collector-service/delivery/grpc/fetcher_grpc/collector.proto
+// source: internal/post-collector-service/delivery/grpc/collector_grpc/collector.proto
 
 package pb
 
@@ -140,12 +140,12 @@ func file_internal_post_collector_service_delivery_grpc_fetcher_grpc_collector_p
 
 var file_internal_post_collector_service_delivery_grpc_fetcher_grpc_collector_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_internal_post_collector_service_delivery_grpc_fetcher_grpc_collector_proto_goTypes = []interface{}{
-	(*Empty)(nil),  // 0: fetcher_grpc.Empty
-	(*Result)(nil), // 1: fetcher_grpc.Result
+	(*Empty)(nil),  // 0: collector_grpc.Empty
+	(*Result)(nil), // 1: collector_grpc.Result
 }
 var file_internal_post_collector_service_delivery_grpc_fetcher_grpc_collector_proto_depIdxs = []int32{
-	0, // 0: fetcher_grpc.CollectorService.CollectorPosts:input_type -> fetcher_grpc.Empty
-	1, // 1: fetcher_grpc.CollectorService.CollectorPosts:output_type -> fetcher_grpc.Result
+	0, // 0: collector_grpc.CollectorService.CollectorPosts:input_type -> collector_grpc.Empty
+	1, // 1: collector_grpc.CollectorService.CollectorPosts:output_type -> collector_grpc.Result
 	1, // [1:2] is the sub-list for method output_type
 	0, // [0:1] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name

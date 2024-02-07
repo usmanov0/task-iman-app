@@ -2,6 +2,7 @@ package http
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 	"test-project-iman/internal/api-gateway/app"
@@ -19,20 +20,25 @@ func NewController(service app.Service) *HttpServer {
 }
 
 func (c *HttpServer) CollectPostsHandler(w http.ResponseWriter, r *http.Request) {
-	err := c.service.FetchPosts()
+	err := c.service.CollectPosts()
 
 	if err != nil {
 		http.Error(w, "error fetching data "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 
+	response := map[string]interface{}{
+		"message": fmt.Sprint("Posts collected successfully and saved to database"),
+	}
+
 	w.Header().Add("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode("Data fetched successfully and saved to database")
+	json.NewEncoder(w).Encode(response)
 }
 
 func (c *HttpServer) GetPosts(w http.ResponseWriter, r *http.Request) {
-	posts, err := c.service.GetList()
+	var page, limit int
+	posts, err := c.service.GetList(page, limit)
 	if err != nil {
 		http.Error(w, "Failed to get posts"+err.Error(), http.StatusInternalServerError)
 	}
@@ -78,15 +84,19 @@ func (c *HttpServer) Update(w http.ResponseWriter, r *http.Request) {
 	title := updateRequest.Title
 	body := updateRequest.Body
 
-	updateResponse, err := c.service.Update(id, title, body)
+	err = c.service.Update(id, title, body)
 	if err != nil {
 		http.Error(w, "Failed to update post", http.StatusInternalServerError)
 		return
 	}
 
+	response := map[string]interface{}{
+		"message": fmt.Sprint("Post successfully updated"),
+	}
+
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(updateResponse)
+	json.NewEncoder(w).Encode(response)
 }
 
 func (c *HttpServer) Delete(w http.ResponseWriter, _ *http.Request) {
@@ -98,7 +108,11 @@ func (c *HttpServer) Delete(w http.ResponseWriter, _ *http.Request) {
 		return
 	}
 
+	response := map[string]interface{}{
+		"message": fmt.Sprint("Post successfully deleted"),
+	}
+
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode("Deleted successfully")
+	json.NewEncoder(w).Encode(response)
 }

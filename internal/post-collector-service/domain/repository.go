@@ -5,5 +5,5 @@ type PostRepository interface {
 }
 
 type PostProviderRepository interface {
-	FetchPosts(page string) ([]Post, error)
+	CollectPosts(page string) ([]Post, error)
 }

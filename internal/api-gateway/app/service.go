@@ -3,47 +3,47 @@ package app
 import (
 	"context"
 	"test-project-iman/internal/api-gateway/model"
-	fetcher "test-project-iman/proto/fetcher_proto/fetcher_grpc/pb"
-	postservice "test-project-iman/proto/post_proto/crud_grpc/pb"
+	collector "test-project-iman/proto/collector_proto/collector_grpc/pb"
+	postservice "test-project-iman/proto/post_proto/post_grpc/pb"
 )
 
 type Service interface {
-	FetcherService
+	CollectorService
 	PostService
 }
 
-type FetcherService interface {
-	FetchPosts() error
+type CollectorService interface {
+	CollectPosts() error
 }
 
 type PostService interface {
-	GetList() ([]model.Posts, error)
+	GetList(page, limit int) ([]model.Posts, error)
 	GetById(id int) (*model.Post, error)
-	Update(postId int, title, body string) (*model.PostUpdateResponse, error)
+	Update(postId int, title, body string) error
 	Delete(postId int) error
 }
 
 type service struct {
-	fetcherClient fetcher.CollectorServiceClient
-	postClient    postservice.CrudServiceClient
+	collectorClient collector.CollectorServiceClient
+	postClient      postservice.PostServiceClient
 }
 
 func NewUsecase(
-	fClient fetcher.CollectorServiceClient,
-	mClient postservice.CrudServiceClient,
+	fClient collector.CollectorServiceClient,
+	mClient postservice.PostServiceClient,
 ) Service {
 	return &service{
-		fetcherClient: fClient,
-		postClient:    mClient,
+		collectorClient: fClient,
+		postClient:      mClient,
 	}
 }
 
-func (s *service) FetchPosts() error {
+func (s *service) CollectPosts() error {
 	ctx := context.Background()
 
-	req := fetcher.Empty{}
+	req := collector.Empty{}
 
-	_, err := s.fetcherClient.CollectorPosts(ctx, &req)
+	_, err := s.collectorClient.CollectorPosts(ctx, &req)
 	if err != nil {
 		return err
 	}
@@ -51,9 +51,12 @@ func (s *service) FetchPosts() error {
 	return nil
 }
 
-func (s *service) GetList() ([]model.Posts, error) {
+func (s *service) GetList(page, limit int) ([]model.Posts, error) {
 	ctx := context.Background()
-	req := postservice.PostRequestPage{}
+	req := postservice.GetPostsList{
+		Page:  int64(page),
+		Limit: int64(limit),
+	}
 
 	res, err := s.postClient.GetList(ctx, &req)
 
@@ -86,7 +89,7 @@ func (s *service) GetById(id int) (*model.Post, error) {
 	return post, nil
 }
 
-func (s *service) Update(postId int, title, body string) (*model.PostUpdateResponse, error) {
+func (s *service) Update(postId int, title, body string) error {
 	ctx := context.Background()
 	req := postservice.PostUpdate{
 		Id:    int64(postId),
@@ -94,14 +97,13 @@ func (s *service) Update(postId int, title, body string) (*model.PostUpdateRespo
 		Body:  body,
 	}
 
-	res, err := s.postClient.Update(ctx, &req)
+	_, err := s.postClient.Update(ctx, &req)
 
 	if err != nil {
-		return nil, err
+		return err
 	}
-	updatePost := model.PostUpdateResponse{res.Success, res.Message}
 
-	return &updatePost, nil
+	return nil
 }
 
 func (s *service) Delete(postId int) error {

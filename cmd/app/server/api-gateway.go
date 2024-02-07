@@ -7,8 +7,8 @@ import (
 	http2 "net/http"
 	"os"
 	"test-project-iman/internal/api-gateway/app"
-	client "test-project-iman/internal/api-gateway/delivery/grpc_server_client"
-	controller "test-project-iman/internal/api-gateway/http"
+	"test-project-iman/internal/api-gateway/client"
+	controller "test-project-iman/internal/api-gateway/delivery/http"
 )
 
 func SetupApiGatewayRouter() http2.Handler {
@@ -25,7 +25,7 @@ func SetupApiGatewayRouter() http2.Handler {
 		router.Get("/get-posts", controller.GetPosts)
 		router.Get("/get-post", controller.GetPost)
 		router.Put("/update-post", controller.Update)
-		router.Delete("/delete-posts", controller.Delete)
+		router.Delete("/delete-post", controller.Delete)
 	})
 
 	server := &http2.Server{Addr: os.Getenv("HTTP_PORT"), Handler: router}

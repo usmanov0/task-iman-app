@@ -38,7 +38,7 @@ func (uc *PostCollectorService) CollectPosts() error {
 			defer wg.Done()
 
 			pageStr := strconv.Itoa(page)
-			posts, err := uc.postProviderRepo.FetchPosts(pageStr)
+			posts, err := uc.postProviderRepo.CollectPosts(pageStr)
 			if err != nil {
 				return
 			}

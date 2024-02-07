@@ -38,7 +38,7 @@ type ApiResponse struct {
 	Data []domain.Post `json:"data"`
 }
 
-func (p *postProviderRepo) FetchPosts(page string) ([]domain.Post, error) {
+func (p *postProviderRepo) CollectPosts(page string) ([]domain.Post, error) {
 	res, err := http.Get("https://gorest.co.in/public/v1/posts?page=" + page)
 	if err != nil {
 		return nil, err

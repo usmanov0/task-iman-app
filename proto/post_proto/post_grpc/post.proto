@@ -3,14 +3,19 @@ syntax = "proto3";
 package crud_grpc;
 option go_package = "/pb";
 
-service CrudService{
-    rpc GetList(Empty)  returns(PostList);
+service PostService{
+    rpc GetList(GetPostsList)  returns(PostList);
     rpc GetPost(PostRequestId) returns(Post);
-    rpc Update(PostUpdate) returns(Result);
+    rpc Update(PostUpdate) returns(Empty);
     rpc Delete(PostRequestId) returns(Empty);
 }
 
 message Empty{}
+
+message GetPostsList{
+    int64 page = 1;
+    int64 limit = 2;
+}
 
 message PostRequestId{
     int64 id = 1;
@@ -32,9 +37,4 @@ message PostUpdate{
 
 message PostList{
     repeated Post post = 1;
-}
-
-message Result{
-    bool success = 1;
-    string message = 2;
 }

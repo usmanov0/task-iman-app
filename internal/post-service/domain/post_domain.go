@@ -6,8 +6,3 @@ type Post struct {
 	Title  string `json:"title"`
 	Body   string `json:"body"`
 }
-
-type PostUpdateResponse struct {
-	Success bool   `json:"success"`
-	Message string `json:"message"`
-}

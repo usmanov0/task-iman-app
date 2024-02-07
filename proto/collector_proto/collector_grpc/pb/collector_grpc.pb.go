@@ -31,7 +31,7 @@ func NewCollectorServiceClient(cc grpc.ClientConnInterface) CollectorServiceClie
 
 func (c *collectorServiceClient) CollectorPosts(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Result, error) {
 	out := new(Result)
-	err := c.cc.Invoke(ctx, "/fetcher_grpc.CollectorService/CollectorPosts", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/collector_grpc.CollectorService/CollectorPosts", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -76,7 +76,7 @@ func _CollectorService_CollectorPosts_Handler(srv interface{}, ctx context.Conte
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/fetcher_grpc.CollectorService/CollectorPosts",
+		FullMethod: "/collector_grpc.CollectorService/CollectorPosts",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CollectorServiceServer).CollectorPosts(ctx, req.(*Empty))
@@ -88,7 +88,7 @@ func _CollectorService_CollectorPosts_Handler(srv interface{}, ctx context.Conte
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var CollectorService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "fetcher_grpc.CollectorService",
+	ServiceName: "collector_grpc.CollectorService",
 	HandlerType: (*CollectorServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -97,5 +97,5 @@ var CollectorService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "internal/post-collector-service/delivery/grpc/fetcher_grpc/collector.proto",
+	Metadata: "proto/collector_proto/collector_grpc/collector.proto",
 }
